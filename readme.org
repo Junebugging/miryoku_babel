@@ -12,6 +12,8 @@ This document describes Miryoku Babel only.  For Miryoku documentation, implemen
 
 ** Overview
 
+This file can be edited and used to generate Miryoku layouts.
+
 [[https://www.gnu.org/software/emacs/][Emacs]] is an extensible text editor.  [[https://orgmode.org/][Org]] is an emacs mode for structured text. [[https://orgmode.org/worg/org-contrib/babel/][Babel]] is org's ability to execute source code from within org documents.  This org document uses babel to generate the layer data source files for Miryoku implementations.
 
 [[#layer-tables][Layers]] and [[#alternative-layouts][alternative layouts]] are maintained in org tables.  The tables are [[#tangling][tangled]] into [[#tangled-files][source files]] via [[#scripts-and-data][python scripts and additional data tables]].
@@ -67,16 +69,21 @@ The Test workflow is not applicable when using the Build workflow and should be 
 
 ***** Tangle
 
-Visit the Actions tab, select the Build workflow, select Run workflow, select the Branch if desired, activate Run workflow, select the Artifacts, and unzip the downloaded zip file.
+After modifying this document, visit the Actions tab, select the Build workflow, select Run workflow, select the Branch if desired, activate Run workflow, select the Artifacts, and unzip the downloaded zip file.
+
+
+** After tangling
+
+After tangling, the resulting layout files can be used by placing them in the ~/miryoku/miryoku_babel~ folder of your miryoku repository files.
 
 
 ** Layer Tables
 
 The layers are maintained in tables.  ~U_NP~ indicates the key is not present and is used to fill in the table around the thumb keys.
 
-Basic keycodes are entered without a common prefix.  Symbols can be entered as-is, except for '-' (~MINS~), '.' (~DOT~), '|' (~PIPE~), and '"' (~DQUO~). Empty cells are unused.
+Basic keycodes are entered without a common prefix.  Symbols can be entered as-is, except for '-' (~MINS~), '.' (~DOT~), '|' (~PIPE~), and '"' (~DQUO~).  Empty cells are unused.  Other keycodes are in the keycode-translations table.  Layers can be changed with ~DF(layer)~ or toggled with ~TG(layer)~' when supported in keycode-translations.
 
-The base layer is maintained as separate tables for tap alphas, tap thumbs, and hold.  Other layers are specified as a single hand including thumbs.  Tables are combined to produce the keymap data for each layer.
+The base layer is maintained as separate tables for tap alphas, tap thumbs, and hold.  Other layers are specified as a single hand including thumbs.  Tables are combined to produce the keymap data for each layer. 
 
 
 *** Base
@@ -96,7 +103,7 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 ***** Thumbs
 
 #+NAME: thumbs
-| U_NP  | U_NP  | ESC   | SPC   | TAB   | ENT   | BSPC  | DEL   | U_NP  | U_NP  |
+| U_NP  | U_NP  | ESC   | TAB   | A     | I     | ENT   | DEL   | U_NP  | U_NP  |
 
 
 **** Hold
@@ -104,8 +111,8 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 #+NAME: hold
 | BOOT     | DF(U_TAP) | DF(U_EXTRA) | DF(U_BASE) |         |       | DF(U_BASE) | DF(U_EXTRA) | DF(U_TAP) | BOOT     |
 | LGUI     | LALT      | LCTL        | LSFT       |         |       | LSFT       | LCTL        | LALT      | LGUI     |
-| U_BUTTON | ALGR      | LOCK_OPP    | LOCK_CUR   |         |       | LOCK_CUR   | LOCK_OPP    | ALGR      | U_BUTTON |
-| U_NP     | U_NP      | U_MEDIA     | U_NAV      | U_MOUSE | U_SYM | U_NUM      | U_FUN       | U_NP      | U_NP     |
+| U_BUTTON | U_MEDIA   | U_NAV       | U_MOUSE    |         |       | U_SYM      | U_NUM       | U_FUN     | U_BUTTON |
+| U_NP     | U_NP      | U_MEDIA     | ALRG       | U_NP    | U_NP  | U_NUM      | U_FUN       | U_NP      | U_NP     |
 
 
 *** Nav
@@ -114,27 +121,27 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 | U_RDO  | U_PST | U_CPY | U_CUT | U_UND |
 | CPSWRD | LEFT  | DOWN  | UP    | RGHT  |
 | INS    | HOME  | PGDN  | PGUP  | END   |
-| ENT    | BSPC  | DEL   | U_NP  | U_NP  |
+| BSPC   | ENT   | DEL   | U_NP  | U_NP  |
 
 
 *** Mouse
 
 #+NAME: mouse-r
-| U_RDO | U_PST | U_CPY | U_CUT | U_UND |
-|       | MS_L  | MS_D  | MS_U  | MS_R  |
-|       | WH_L  | WH_D  | WH_U  | WH_R  |
-| BTN2  | BTN1  | BTN3  | U_NP  | U_NP  |
+| U_RDO      | U_PST      | U_CPY      | U_CUT      | U_UND      |
+| TG(U_GAME) | MS_L       | MS_D       | MS_U       | MS_R       |
+|            | WH_L       | WH_D       | WH_U       | WH_R       |
+| BTN1       | BTN2       | BTN3       | U_NP       | U_NP       |
 
 
 *** Button
 
 #+NAME: button
-| U_UND | U_CUT | U_CPY | U_PST | U_RDO | U_RDO | U_PST | U_CPY | U_CUT | U_UND |
-| LGUI  | LALT  | LCTL  | LSFT  |       |       | LSFT  | LCTL  | LALT  | LGUI  |
-| U_UND | U_CUT | U_CPY | U_PST | U_RDO | U_RDO | U_PST | U_CPY | U_CUT | U_UND |
+| BOOT      | U_CUT     | U_CPY     | U_PST     | U_RDO      | U_RDO      | U_PST     | U_CPY     | U_CUT     | BOOT      |
+| LGUI      | LALT      | LCTL      | LSFT      | TG(U_GAME) | TG(U_GAME) | LSFT      | LCTL      | LALT      | LGUI      |
+| U_UND     | U_CUT     | U_CPY     | U_PST     | U_RDO      | U_RDO      | U_PST     | U_CPY     | U_CUT     | U_UND     |
 
 #+NAME: button-thumbs
-| U_NP  | U_NP  | BTN3  | BTN1  | BTN2  | BTN2  | BTN1  | BTN3  | U_NP  | U_NP  |
+| U_NP  | U_NP  | BTN3  | BTN2  | BTN1  | BTN1  | BTN2  | BTN3  | U_NP  | U_NP  |
 
 
 *** Media
@@ -167,10 +174,21 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 *** Fun
 
 #+NAME: fun-l
-| F12  | F7   | F8   | F9   | PSCR |
-| F11  | F4   | F5   | F6   | SLCK |
-| F10  | F1   | F2   | F3   | PAUS |
-| U_NP | U_NP | APP  | SPC  | TAB  |
+| F12        | F7         | F8         | F9         | PSCR       |
+| F11        | F4         | F5         | F6         | SLCK       |
+| F10        | F1         | F2         | F3         | PAUS       |
+| U_NP       | U_NP       | APP        | TAB        | SPC        |
+
+
+*** Game
+
+The ~Game~ layer isn't used by default, but can be enabled by binding any key to ~TG(U_GAME)~.
+
+#+NAME: game-l
+| LALT       | Q          | F          | E          | 1          |
+| LSFT       | A          | W          | D          | 2          |
+| TAB        | TG(U_GAME) | S          | R          | 3          |
+| U_NP       | U_NP       | ESC        | LCTL       | SPC        |
 
 
 *** Alternative Layouts
@@ -245,7 +263,7 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 
 #+NAME: workman
 | Q    | D    | R    | W    | B    | J    | F    | U    | P    | '    |
-| A    | S    | H    | T    | G    | Y    | N    | E    | O    | I    |
+| S    | H    | SPC  | T    | G    | Y    | N    | BSPC | E    | O    
 | Z    | X    | M    | C    | V    | K    | L    | ,    | DOT  | /    |
 
 
@@ -285,16 +303,16 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 | U_RDO | U_PST | U_CPY | U_CUT | U_UND  |
 | LEFT  | DOWN  | UP    | RGHT  | CPSWRD |
 | HOME  | PGDN  | PGUP  | END   | INS    |
-| ENT   | BSPC  | DEL   | U_NP  | U_NP   |
+| BSPC  | ENT   | DEL   | U_NP  | U_NP   |
 
 
 ****** Mouse
 
 #+NAME: mouse-r-vi
-| U_RDO | U_PST | U_CPY | U_CUT | U_UND |
-| MS_L  | MS_D  | MS_U  | MS_R  |       |
-| WH_L  | WH_D  | WH_U  | WH_R  |       |
-| BTN2  | BTN1  | BTN3  | U_NP  | U_NP  |
+| U_RDO      | U_PST      | U_CPY      | U_CUT      | U_UND      |
+| MS_L       | MS_D       | MS_U       | MS_R       | TG(U_GAME) |
+| WH_L       | WH_D       | WH_U       | WH_R       |            |
+| BTN1       | BTN2       | BTN3       | U_NP       | U_NP       |
 
 
 ****** Media
@@ -317,16 +335,16 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 | INS    | HOME  | UP    | END   | PGUP  |
 | CPSWRD | LEFT  | DOWN  | RGHT  | PGDN  |
 | U_RDO  | U_PST | U_CPY | U_CUT | U_UND |
-| ENT    | BSPC  | DEL   | U_NP  | U_NP  |
+| BSPC   | ENT   | DEL   | U_NP  | U_NP  |
 
 
 ****** Mouse
 
 #+NAME: mouse-r-invertedt
-|       | WH_L  | MS_U  | WH_R  | WH_U  |
-|       | MS_L  | MS_D  | MS_R  | WH_D  |
-| U_RDO | U_PST | U_CPY | U_CUT | U_UND |
-| BTN2  | BTN1  | BTN3  | U_NP  | U_NP  |
+|            | WH_L       | MS_U       | WH_R       | WH_U       |
+| TG(U_GAME) | MS_L       | MS_D       | MS_R       | WH_D       |
+| U_RDO      | U_PST      | U_CPY      | U_CUT      | U_UND      |
+| BTN1       | BTN2       | BTN3       | U_NP       | U_NP       |
 
 
 ****** Media
@@ -349,7 +367,7 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 ****** Thumbs
 
 #+NAME: thumbs-flip
-| U_NP | U_NP | DEL  | BSPC | ENT  | TAB  | SPC  | ESC  | U_NP | U_NP |
+| U_NP | U_NP | DEL  | ENT  | BSPC | SPC  | TAB  | ESC  | U_NP | U_NP |
 
 
 ****** Hold
@@ -358,7 +376,7 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 | BOOT     | DF(U_TAP) | DF(U_EXTRA) | DF(U_BASE) |       |         | DF(U_BASE) | DF(U_EXTRA) | DF(U_TAP) | BOOT     |
 | LGUI     | LALT      | LCTL        | LSFT       |       |         | LSFT       | LCTL        | LALT      | LGUI     |
 | U_BUTTON | ALGR      | LOCK_OPP    | LOCK_CUR   |       |         | LOCK_CUR   | LOCK_OPP    | ALGR      | U_BUTTON |
-| U_NP     | U_NP      | U_FUN       | U_NUM      | U_SYM | U_MOUSE | U_NAV      | U_MEDIA     | U_NP      | U_NP     |
+| U_NP     | U_NP      | U_FUN       | U_NUM      | U_SYM | U_NAV   | U_MOUSE    | U_MEDIA     | U_NP      | U_NP     |
 
 
 ****** Num
@@ -382,13 +400,19 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 ****** Fun
 
 #+NAME: fun-r
-| PSCR | F7   | F8   | F9   | F12  |
-| SLCK | F4   | F5   | F6   | F11  |
-| PAUS | F1   | F2   | F3   | F10  |
-| TAB  | SPC  | APP  | U_NP | U_NP |
+| PSCR       | F7         | F8         | F9         | F12        |
+| SLCK       | F4         | F5         | F6         | F11        |
+| PAUS       | F1         | F2         | F3         | F10        |
+| SPC        | TAB        | APP        | U_NP       | U_NP       |
 
 
-****** Nav
+****** Game
+
+#+NAME: game-r
+| LALT       | Q          | F          | E          | 1          |
+| LSFT       | A          | W          | D          | 2          |
+| TAB        | TG(U_GAME) | S          | R          | 3          |
+| U_NP       | U_NP       | ESC        | LCTL       | SPC        |
 
 
 ******* Default
@@ -400,16 +424,16 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 | HOME  | PGDN  | PGUP  | END   | INS    |
 | LEFT  | DOWN  | UP    | RGHT  | CPSWRD |
 | U_UND | U_CUT | U_CPY | U_PST | U_RDO  |
-| U_NP  | U_NP  | DEL   | BSPC  | ENT    |
+| U_NP  | U_NP  | DEL   | ENT   | BSPC   |
 
 
 ******** Mouse
 
 #+NAME: mouse-l
-| WH_L  | WH_D  | WH_U  | WH_R  |       |
-| MS_L  | MS_D  | MS_U  | MS_R  |       |
-| U_UND | U_CUT | U_CPY | U_PST | U_RDO |
-| U_NP  | U_NP  | BTN3  | BTN1  | BTN2  |
+| WH_L        | WH_D        | WH_U        | WH_R        |             |
+| MS_L        | MS_D        | MS_U        | MS_R        | TG(U_GAME)  |
+| U_UND       | U_CUT       | U_CPY       | U_PST       | U_RDO       |
+| U_NP        | U_NP        | BTN3        | BTN2        | BTN1        |
 
 
 ******** Media
@@ -432,16 +456,16 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 | PGUP  | HOME  | UP    | END   | INS    |
 | PGDN  | LEFT  | DOWN  | RGHT  | CPSWRD |
 | U_UND | U_CUT | U_CPY | U_PST | U_RDO  |
-| U_NP  | U_NP  | DEL   | BSPC  | ENT    |
+| U_NP  | U_NP  | DEL   | ENT   | BSPC   |
 
 
 ******** Mouse
 
 #+NAME: mouse-l-invertedt
-| WH_U  | WH_L  | MS_U  | WH_R  |       |
-| WH_D  | MS_L  | MS_D  | MS_R  |       |
-| U_UND | U_CUT | U_CPY | U_PST | U_RDO |
-| U_NP  | U_NP  | BTN3  | BTN1  | BTN2  |
+| WH_U       | WH_L       | MS_U       | WH_R  |            |
+| WH_D       | MS_L       | MS_D       | MS_R  | TG(U_GAME) |
+| U_UND      | U_CUT      | U_CPY      | U_PST | U_RDO      |
+| U_NP       | U_NP       | BTN3       | BTN2  | BTN1       |
 
 
 ******** Media
@@ -469,7 +493,7 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 |      |      |      |      |      |
 |      |      |      |      |      |
 |      |      |      |      |      |
-| ENT  | BSPC | DEL  | U_NP | U_NP |
+| BSPC | ENT  | DEL  | U_NP | U_NP |
 
 #+NAME: tem-l
 | <l4> | <l4> | <l4> | <l4> | <l4> |
@@ -477,7 +501,7 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 |      |      |      |      |      |
 |      |      |      |      |      |
 |      |      |      |      |      |
-| U_NP | U_NP | ESC  | SPC  | TAB  |
+| U_NP | U_NP | ESC  | TAB  | SPC  |
 
 
 ** Scripts and Data
@@ -493,12 +517,13 @@ Not available with ~MIRYOKU_LAYERS=FLIP~.
 | U_EXTRA  | Extra  |
 | U_TAP    | Tap    |
 | U_BUTTON | Button |
-| U_NAV    | Nav    |
 | U_MOUSE  | Mouse  |
+| U_NAV    | Nav    |
 | U_MEDIA  | Media  |
 | U_NUM    | Num    |
 | U_SYM    | Sym    |
 | U_FUN    | Fun    |
+| U_GAME   | Game   |
 
 
 **** symbol-names
@@ -660,6 +685,9 @@ Source keycode to implementation equivalent (source, QMK, ZMK, KMonad, SVG, KMK)
 | DF(U_BASE)  | TD(U_TD_U_BASE)  | &u_to_U_BASE  | U_DF(U_BASE)  | U_DF(U_BASE)  | U_DF(U_BASE)  |
 | DF(U_EXTRA) | TD(U_TD_U_EXTRA) | &u_to_U_EXTRA | U_DF(U_EXTRA) | U_DF(U_EXTRA) | U_DF(U_EXTRA) |
 | DF(U_TAP)   | TD(U_TD_U_TAP)   | &u_to_U_TAP   | U_DF(U_TAP)   | U_DF(U_TAP)   | U_DF(U_TAP)   |
+| DF(U_GAME)  | TD(U_TD_U_GAME)  | &u_to_U_GAME  | U_DF(U_GAME)  | U_DF(U_GAME)  | U_DF(U_GAME)  |
+| TG(U_GAME)  | TG(U_TD_U_GAME)  | &tog U_GAME   |               |               |               |
+| TG(U_BASE)  | TG(U_TD_U_BASE)  | &tog U_BASE   |               |               |               |
 | DLR         | DLR              | DLLR          | $             | $             | DLR           |
 | DOT         | DOT              | DOT           | .             | .             | DOT           |
 | DOWN        | DOWN             | DOWN          | down          | Down          | DOWN          |
@@ -913,10 +941,10 @@ results
 #+END_SRC
 
 #+RESULTS: table-layer-taphold
-: "Q",               "W",               "F",               "P",               "B",               "J",               "L",               "U",               "Y",               U_S("&quot;", "&apos;"),\
-: U_MT("A", "Meta"), U_MT("R", "Alt"),  U_MT("S", "Ctrl"), U_MT("T", "Shift"),"G",               "M",               U_MT("N", "Shift"),U_MT("E", "Ctrl"), U_MT("I", "Alt"),  U_MT("O", "Meta"), \
-: U_LT("Z", U_BUTTON),U_MT("X", "AltGR"),"C",               "D",               "V",               "K",               "H",               U_S("&lt;", U_COMM),U_SMT("&gt;", ".", "AltGR"),U_SLT("?", "/", U_BUTTON),\
-: U_NP,              U_NP,              U_LT("Esc", U_MEDIA),U_LT("Space", U_NAV),U_LT("Tab", U_MOUSE),U_LT("Enter", U_SYM),U_LT("Bckspc", U_NUM),U_LT("Delete", U_FUN),U_NP,              U_NP
+: "Q",                "W",               "F",                 "P",                 "B",                 "J",                  "L",                 "U",                  "Y",                        U_S("&quot;", "&apos;"),\
+: U_MT("A", "Meta")  ,U_MT("R", "Alt"),  U_MT("S", "Ctrl"),   U_MT("T", "Shift"),  "G",                 "M",                  U_MT("N", "Shift"),  U_MT("E", "Ctrl"),    U_MT("I", "Alt"),           U_MT("O", "Meta"), \
+: U_LT("Z", U_BUTTON),U_MT("X", "AltGR"),"C",                 "D",                 "V",                 "K",                  "H",                 U_S("&lt;", U_COMM),  U_SMT("&gt;", ".", "AltGR"),U_SLT("?", "/", U_BUTTON),\
+: U_NP,               U_NP,              U_LT("Tab", U_MEDIA),U_LT("Esc", U_MOUSE),U_LT("Space", U_NAV),U_LT("Bckspc", U_SYM),U_LT("Enter", U_NUM),U_LT("Delete", U_FUN),U_NP,                       U_NP
 
 
 **** table-layer-half
@@ -1299,6 +1327,16 @@ Body of miryoku_layer_selection.h.
 #if !defined(MIRYOKU_LAYERMAPPING_FUN)
   #define MIRYOKU_LAYERMAPPING_FUN MIRYOKU_MAPPING
 #endif
+#if !defined(MIRYOKU_LAYER_GAME)
+  #if defined (MIRYOKU_LAYERS_FLIP)
+    #define MIRYOKU_LAYER_GAME MIRYOKU_ALTERNATIVES_GAME_FLIP
+  #else
+    #define MIRYOKU_LAYER_GAME MIRYOKU_ALTERNATIVES_GAME
+  #endif
+#endif
+#if !defined(MIRYOKU_LAYERMAPPING_GAME)
+  #define MIRYOKU_LAYERMAPPING_GAME MIRYOKU_MAPPING
+#endif
 #+END_SRC
 
 
@@ -1324,12 +1362,13 @@ MIRYOKU_X(BASE,   "Base") \
 MIRYOKU_X(EXTRA,  "Extra") \
 MIRYOKU_X(TAP,    "Tap") \
 MIRYOKU_X(BUTTON, "Button") \
-MIRYOKU_X(NAV,    "Nav") \
 MIRYOKU_X(MOUSE,  "Mouse") \
+MIRYOKU_X(NAV,    "Nav") \
 MIRYOKU_X(MEDIA,  "Media") \
 MIRYOKU_X(NUM,    "Num") \
 MIRYOKU_X(SYM,    "Sym") \
-MIRYOKU_X(FUN,    "Fun")
+MIRYOKU_X(FUN,    "Fun") \
+MIRYOKU_X(GAME,   "Gaming")
 #+end_example
 
 
@@ -1357,12 +1396,13 @@ return results
 #define U_EXTRA  "Extra"
 #define U_TAP    "Tap"
 #define U_BUTTON "Button"
-#define U_NAV    "Nav"
 #define U_MOUSE  "Mouse"
+#define U_NAV    "Nav"
 #define U_MEDIA  "Media"
 #define U_NUM    "Num"
 #define U_SYM    "Sym"
 #define U_FUN    "Fun"
+#define U_GAME   "Game"
 #+end_example
 
 
@@ -1647,6 +1687,13 @@ Keycodes that match any of these prefixes will not have ~KC.~ automatically prep
 #define MIRYOKU_ALTERNATIVES_BUTTON \
 <<table-layer-full(current_layer_name="U_BUTTON", alphas_table=button, thumbs_table=button-thumbs)>>
 
+
+#define MIRYOKU_ALTERNATIVES_GAME_FLIP \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-r, mode="r")>>
+
+#define MIRYOKU_ALTERNATIVES_GAME \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-l, mode="l")>>
+
 #+END_SRC
 
 
@@ -1890,7 +1937,15 @@ Keycodes that match any of these prefixes will not have ~KC.~ automatically prep
 #define MIRYOKU_ALTERNATIVES_BUTTON \
 <<table-layer-full(current_layer_name="U_BUTTON", alphas_table=button, thumbs_table=button-thumbs)>>
 
+
+#define MIRYOKU_ALTERNATIVES_GAME_FLIP \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-r, mode="r")>>
+
+#define MIRYOKU_ALTERNATIVES_GAME \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-l, mode="l")>>
+
 #+END_SRC
+
 
 **** [[tangled/zmk/miryoku_layer_selection.h]]
 
@@ -2106,6 +2161,7 @@ Keycodes that match any of these prefixes will not have ~KC.~ automatically prep
 <<table-layer-half(current_layer_name="U_MEDIA", opposite_layer_name="U_FUN", half_table=media-r, mode="r")>>
 
 
+
 #define MIRYOKU_ALTERNATIVES_NUM_FLIP \
 <<table-layer-half(current_layer_name="U_NUM", opposite_layer_name="U_NAV", half_table=num-r, mode="r", hold_table=hold-flip)>>
 
@@ -2129,6 +2185,13 @@ Keycodes that match any of these prefixes will not have ~KC.~ automatically prep
 
 #define MIRYOKU_ALTERNATIVES_BUTTON \
 <<table-layer-full(current_layer_name="U_BUTTON", alphas_table=button, thumbs_table=button-thumbs)>>
+
+
+#define MIRYOKU_ALTERNATIVES_GAME_FLIP \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-r, mode="r")>>
+
+#define MIRYOKU_ALTERNATIVES_GAME \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-l, mode="l")>>
 
 #+END_SRC
 
@@ -2368,6 +2431,13 @@ Keycodes that match any of these prefixes will not have ~KC.~ automatically prep
 
 #define MIRYOKU_ALTERNATIVES_BUTTON \
 <<table-layer-full(current_layer_name="U_BUTTON", alphas_table=button, thumbs_table=button-thumbs)>>
+
+
+#define MIRYOKU_ALTERNATIVES_GAME_FLIP \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-r, mode="r")>>
+
+#define MIRYOKU_ALTERNATIVES_GAME \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-l, mode="l")>>
 
 #+END_SRC
 
@@ -2610,6 +2680,13 @@ Keycodes that match any of these prefixes will not have ~KC.~ automatically prep
 #define MIRYOKU_ALTERNATIVES_BUTTON \
 <<table-layer-full(current_layer_name="U_BUTTON", alphas_table=button, thumbs_table=button-thumbs)>>
 
+
+#define MIRYOKU_ALTERNATIVES_GAME_FLIP \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-r, mode="r")>>
+
+#define MIRYOKU_ALTERNATIVES_GAME \
+<<table-layer-half(current_layer_name="U_GAME", opposite_layer_name="U_MOUSE", half_table=game-l, mode="l")>>
+
 #+END_SRC
 
 
@@ -2645,3 +2722,4 @@ Keycodes that match any of these prefixes will not have ~KC.~ automatically prep
 ** 
 
 [[https://github.com/manna-harbour][https://raw.githubusercontent.com/manna-harbour/miryoku/master/data/logos/manna-harbour-boa-32.png]]
+
