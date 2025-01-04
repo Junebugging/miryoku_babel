@@ -103,7 +103,7 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 ***** Thumbs
 
 #+NAME: thumbs
-| U_NP  | U_NP  | ESC   | TAB   | SPC   | BSPC  | ENT   | DEL   | U_NP  | U_NP  |
+| U_NP  | U_NP  | ESC   | TAB   | A     | I     | ENT   | DEL   | U_NP  | U_NP  |
 
 
 **** Hold
@@ -111,8 +111,8 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 #+NAME: hold
 | BOOT     | DF(U_TAP) | DF(U_EXTRA) | DF(U_BASE) |         |       | DF(U_BASE) | DF(U_EXTRA) | DF(U_TAP) | BOOT     |
 | LGUI     | LALT      | LCTL        | LSFT       |         |       | LSFT       | LCTL        | LALT      | LGUI     |
-| U_BUTTON | ALGR      | LOCK_OPP    | LOCK_CUR   |         |       | LOCK_CUR   | LOCK_OPP    | ALGR      | U_BUTTON |
-| U_NP     | U_NP      | U_MEDIA     | U_MOUSE    | U_NAV   | U_SYM | U_NUM      | U_FUN       | U_NP      | U_NP     |
+| U_BUTTON | U_MEDIA   | U_NAV       | U_MOUSE    |         |       | U_SYM      | U_NUM       | U_FUN     | U_BUTTON |
+| U_NP     | U_NP      | U_MEDIA     | ALRG       | U_NP    | U_NP  | U_NUM      | U_FUN       | U_NP      | U_NP     |
 
 
 *** Nav
@@ -263,7 +263,7 @@ The ~Game~ layer isn't used by default, but can be enabled by binding any key to
 
 #+NAME: workman
 | Q    | D    | R    | W    | B    | J    | F    | U    | P    | '    |
-| A    | S    | H    | T    | G    | Y    | N    | E    | O    | I    |
+| S    | H    | SPC  | T    | G    | Y    | N    | BSPC | E    | O    |
 | Z    | X    | M    | C    | V    | K    | L    | ,    | DOT  | /    |
 
 
