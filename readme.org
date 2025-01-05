@@ -185,10 +185,10 @@ The base layer is maintained as separate tables for tap alphas, tap thumbs, and 
 The ~Game~ layer isn't used by default, but can be enabled by binding any key to ~TG(U_GAME)~.
 
 #+NAME: game-l
-| LALT       | Q          | F          | E          | 1          |
-| LSFT       | A          | W          | D          | 2          |
-| TAB        | TG(U_GAME) | S          | R          | 3          |
-| U_NP       | U_NP       | ESC        | LCTL       | SPC        |
+| LCTL       | Q          | F          | E          | 1          |
+| SPC        | A          | W          | D          | 2          |
+| LSFT       | TG(U_GAME) | S          | R          | 3          |
+| U_NP       | U_NP       | ESC        | TAB        | LALT       |
 
 
 *** Alternative Layouts
